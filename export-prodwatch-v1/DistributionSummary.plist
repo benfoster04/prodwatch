@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>prodwatch</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>x86_64</string>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>2E20B4E906F99249578ECB16169F0D59CCDC6275</string>
+				<key>dateExpires</key>
+				<string>25/03/2031</string>
+				<key>type</key>
+				<string>Developer ID Application</string>
+			</dict>
+			<key>name</key>
+			<string>prodwatch.app</string>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>C8ZUL85WZM</string>
+				<key>name</key>
+				<string>THE PAROCHIAL CHURCH COUNCIL OF THE ECCLESIASTICAL PARISH OF ST. ANDREW, RUGBY</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>
