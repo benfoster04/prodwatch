@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B55087522FBBB6C5005B7736 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55087512FBBB6C5005B7736 /* WidgetKit.framework */; };
+		B55087542FBBB6C5005B7736 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55087532FBBB6C5005B7736 /* SwiftUI.framework */; };
+		B55087652FBBB6C7005B7736 /* widgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B550874F2FBBB6C5005B7736 /* widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B53BC1D72FAA954B000FA074 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +27,54 @@
 			remoteGlobalIDString = B53BC1C82FAA9547000FA074;
 			remoteInfo = prodwatch;
 		};
+		B550872B2FBBADBD005B7736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B53BC1C12FAA9547000FA074 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B550871D2FBBADBA005B7736;
+			remoteInfo = prodwatch.ios;
+		};
+		B55087352FBBADBD005B7736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B53BC1C12FAA9547000FA074 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B550871D2FBBADBA005B7736;
+			remoteInfo = prodwatch.ios;
+		};
+		B55087632FBBB6C7005B7736 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B53BC1C12FAA9547000FA074 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B550874E2FBBB6C5005B7736;
+			remoteInfo = widgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B550876A2FBBB6C7005B7736 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B55087652FBBB6C7005B7736 /* widgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B53BC1C92FAA9547000FA074 /* prodwatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prodwatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53BC1D62FAA954B000FA074 /* prodwatchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = prodwatchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53BC1E02FAA954B000FA074 /* prodwatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = prodwatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B550871E2FBBADBA005B7736 /* prodwatch.ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prodwatch.ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B550872A2FBBADBD005B7736 /* prodwatch.iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = prodwatch.iosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B55087342FBBADBD005B7736 /* prodwatch.iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = prodwatch.iosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B550874F2FBBB6C5005B7736 /* widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = widgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B55087512FBBB6C5005B7736 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B55087532FBBB6C5005B7736 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		B550876B2FBBB899005B7736 /* widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = widgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -51,6 +99,13 @@
 			);
 			target = B53BC1DF2FAA954B000FA074 /* prodwatchUITests */;
 		};
+		B55087662FBBB6C7005B7736 /* Exceptions for "widget" folder in "widgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B550874E2FBBB6C5005B7736 /* widgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -72,6 +127,29 @@
 		B53BC1E32FAA954B000FA074 /* prodwatchUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = prodwatchUITests;
+			sourceTree = "<group>";
+		};
+		B550871F2FBBADBA005B7736 /* prodwatch.ios */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = prodwatch.ios;
+			sourceTree = "<group>";
+		};
+		B550872D2FBBADBD005B7736 /* prodwatch.iosTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = prodwatch.iosTests;
+			sourceTree = "<group>";
+		};
+		B55087372FBBADBD005B7736 /* prodwatch.iosUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = prodwatch.iosUITests;
+			sourceTree = "<group>";
+		};
+		B55087552FBBB6C5005B7736 /* widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B55087662FBBB6C7005B7736 /* Exceptions for "widget" folder in "widgetExtension" target */,
+			);
+			path = widget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -98,15 +176,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B550871B2FBBADBA005B7736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087272FBBADBD005B7736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087312FBBADBD005B7736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B550874C2FBBB6C5005B7736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B55087542FBBB6C5005B7736 /* SwiftUI.framework in Frameworks */,
+				B55087522FBBB6C5005B7736 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		B53BC1C02FAA9547000FA074 = {
 			isa = PBXGroup;
 			children = (
+				B550876B2FBBB899005B7736 /* widgetExtension.entitlements */,
 				B53BC1CB2FAA9547000FA074 /* prodwatch */,
 				B53BC1D92FAA954B000FA074 /* prodwatchTests */,
 				B53BC1E32FAA954B000FA074 /* prodwatchUITests */,
+				B550871F2FBBADBA005B7736 /* prodwatch.ios */,
+				B550872D2FBBADBD005B7736 /* prodwatch.iosTests */,
+				B55087372FBBADBD005B7736 /* prodwatch.iosUITests */,
+				B55087552FBBB6C5005B7736 /* widget */,
+				B55087502FBBB6C5005B7736 /* Frameworks */,
 				B53BC1CA2FAA9547000FA074 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -117,8 +231,21 @@
 				B53BC1C92FAA9547000FA074 /* prodwatch.app */,
 				B53BC1D62FAA954B000FA074 /* prodwatchTests.xctest */,
 				B53BC1E02FAA954B000FA074 /* prodwatchUITests.xctest */,
+				B550871E2FBBADBA005B7736 /* prodwatch.ios.app */,
+				B550872A2FBBADBD005B7736 /* prodwatch.iosTests.xctest */,
+				B55087342FBBADBD005B7736 /* prodwatch.iosUITests.xctest */,
+				B550874F2FBBB6C5005B7736 /* widgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B55087502FBBB6C5005B7736 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B55087512FBBB6C5005B7736 /* WidgetKit.framework */,
+				B55087532FBBB6C5005B7736 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +319,98 @@
 			productReference = B53BC1E02FAA954B000FA074 /* prodwatchUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		B550871D2FBBADBA005B7736 /* prodwatch.ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55087422FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.ios" */;
+			buildPhases = (
+				B550871A2FBBADBA005B7736 /* Sources */,
+				B550871B2FBBADBA005B7736 /* Frameworks */,
+				B550871C2FBBADBA005B7736 /* Resources */,
+				B550876A2FBBB6C7005B7736 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B55087642FBBB6C7005B7736 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B550871F2FBBADBA005B7736 /* prodwatch.ios */,
+			);
+			name = prodwatch.ios;
+			packageProductDependencies = (
+			);
+			productName = prodwatch.ios;
+			productReference = B550871E2FBBADBA005B7736 /* prodwatch.ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B55087292FBBADBD005B7736 /* prodwatch.iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55087432FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.iosTests" */;
+			buildPhases = (
+				B55087262FBBADBD005B7736 /* Sources */,
+				B55087272FBBADBD005B7736 /* Frameworks */,
+				B55087282FBBADBD005B7736 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B550872C2FBBADBD005B7736 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B550872D2FBBADBD005B7736 /* prodwatch.iosTests */,
+			);
+			name = prodwatch.iosTests;
+			packageProductDependencies = (
+			);
+			productName = prodwatch.iosTests;
+			productReference = B550872A2FBBADBD005B7736 /* prodwatch.iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B55087332FBBADBD005B7736 /* prodwatch.iosUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55087442FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.iosUITests" */;
+			buildPhases = (
+				B55087302FBBADBD005B7736 /* Sources */,
+				B55087312FBBADBD005B7736 /* Frameworks */,
+				B55087322FBBADBD005B7736 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B55087362FBBADBD005B7736 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B55087372FBBADBD005B7736 /* prodwatch.iosUITests */,
+			);
+			name = prodwatch.iosUITests;
+			packageProductDependencies = (
+			);
+			productName = prodwatch.iosUITests;
+			productReference = B55087342FBBADBD005B7736 /* prodwatch.iosUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B550874E2FBBB6C5005B7736 /* widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55087672FBBB6C7005B7736 /* Build configuration list for PBXNativeTarget "widgetExtension" */;
+			buildPhases = (
+				B550874B2FBBB6C5005B7736 /* Sources */,
+				B550874C2FBBB6C5005B7736 /* Frameworks */,
+				B550874D2FBBB6C5005B7736 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B55087552FBBB6C5005B7736 /* widget */,
+			);
+			name = widgetExtension;
+			packageProductDependencies = (
+			);
+			productName = widgetExtension;
+			productReference = B550874F2FBBB6C5005B7736 /* widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -213,6 +432,20 @@
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = B53BC1C82FAA9547000FA074;
 					};
+					B550871D2FBBADBA005B7736 = {
+						CreatedOnToolsVersion = 26.3;
+					};
+					B55087292FBBADBD005B7736 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = B550871D2FBBADBA005B7736;
+					};
+					B55087332FBBADBD005B7736 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = B550871D2FBBADBA005B7736;
+					};
+					B550874E2FBBB6C5005B7736 = {
+						CreatedOnToolsVersion = 26.3;
+					};
 				};
 			};
 			buildConfigurationList = B53BC1C42FAA9547000FA074 /* Build configuration list for PBXProject "prodwatch" */;
@@ -232,6 +465,10 @@
 				B53BC1C82FAA9547000FA074 /* prodwatch */,
 				B53BC1D52FAA954B000FA074 /* prodwatchTests */,
 				B53BC1DF2FAA954B000FA074 /* prodwatchUITests */,
+				B550871D2FBBADBA005B7736 /* prodwatch.ios */,
+				B55087292FBBADBD005B7736 /* prodwatch.iosTests */,
+				B55087332FBBADBD005B7736 /* prodwatch.iosUITests */,
+				B550874E2FBBB6C5005B7736 /* widgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -252,6 +489,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		B53BC1DE2FAA954B000FA074 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B550871C2FBBADBA005B7736 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087282FBBADBD005B7736 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087322FBBADBD005B7736 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B550874D2FBBB6C5005B7736 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,6 +547,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B550871A2FBBADBA005B7736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087262FBBADBD005B7736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55087302FBBADBD005B7736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B550874B2FBBB6C5005B7736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -294,6 +587,21 @@
 			isa = PBXTargetDependency;
 			target = B53BC1C82FAA9547000FA074 /* prodwatch */;
 			targetProxy = B53BC1E12FAA954B000FA074 /* PBXContainerItemProxy */;
+		};
+		B550872C2FBBADBD005B7736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B550871D2FBBADBA005B7736 /* prodwatch.ios */;
+			targetProxy = B550872B2FBBADBD005B7736 /* PBXContainerItemProxy */;
+		};
+		B55087362FBBADBD005B7736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B550871D2FBBADBA005B7736 /* prodwatch.ios */;
+			targetProxy = B55087352FBBADBD005B7736 /* PBXContainerItemProxy */;
+		};
+		B55087642FBBB6C7005B7736 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B550874E2FBBB6C5005B7736 /* widgetExtension */;
+			targetProxy = B55087632FBBB6C7005B7736 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -581,6 +889,262 @@
 			};
 			name = Release;
 		};
+		B550873C2FBBADBD005B7736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = prodwatch;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C8ZUL85WZM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "prodwatch-ios-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = ProdWatch;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app communciates with a ProdWatch instance on the local network.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B550873D2FBBADBD005B7736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = prodwatch;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C8ZUL85WZM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "prodwatch-ios-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = ProdWatch;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app communciates with a ProdWatch instance on the local network.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B550873E2FBBADBD005B7736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MHVF4VD93;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/prodwatch.ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/prodwatch.ios";
+			};
+			name = Debug;
+		};
+		B550873F2FBBADBD005B7736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MHVF4VD93;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/prodwatch.ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/prodwatch.ios";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B55087402FBBADBD005B7736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MHVF4VD93;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = prodwatch.ios;
+			};
+			name = Debug;
+		};
+		B55087412FBBADBD005B7736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MHVF4VD93;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = prodwatch.ios;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B55087682FBBB6C7005B7736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = widgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C8ZUL85WZM;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-ios.widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B55087692FBBB6C7005B7736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = widgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C8ZUL85WZM;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = widget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = widget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "sta.prodwatch-ios.widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -616,6 +1180,42 @@
 			buildConfigurations = (
 				B53BC1F12FAA954B000FA074 /* Debug */,
 				B53BC1F22FAA954B000FA074 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B55087422FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B550873C2FBBADBD005B7736 /* Debug */,
+				B550873D2FBBADBD005B7736 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B55087432FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B550873E2FBBADBD005B7736 /* Debug */,
+				B550873F2FBBADBD005B7736 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B55087442FBBADBD005B7736 /* Build configuration list for PBXNativeTarget "prodwatch.iosUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B55087402FBBADBD005B7736 /* Debug */,
+				B55087412FBBADBD005B7736 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B55087672FBBB6C7005B7736 /* Build configuration list for PBXNativeTarget "widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B55087682FBBB6C7005B7736 /* Debug */,
+				B55087692FBBB6C7005B7736 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
