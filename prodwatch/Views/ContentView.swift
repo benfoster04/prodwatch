@@ -126,6 +126,10 @@ struct ContentView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
+            .fixedSize(horizontal: true, vertical: false)
+            .layoutPriority(1)
+            .padding(.horizontal, 16)
+
         }
 
         // Trailing — OSC status, save, export, settings
@@ -139,6 +143,7 @@ struct ContentView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
+            .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 8))
             .help(oscListener.isListening
                   ? "OSC listening on port \(String(oscListener.port))"
                   : "OSC not listening")
