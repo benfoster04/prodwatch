@@ -20,6 +20,7 @@ Contributions are welcome! Please get in touch.
 
 ## Roadmap
 
+- Wiki in progress
 - Better PDF Report Design
 - Show notes
 - iOS/iPadOS Companion app for local-network viewing.
