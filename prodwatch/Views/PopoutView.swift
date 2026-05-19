@@ -54,8 +54,9 @@ struct PopoutView: View {
                         .background(staysOnTop ? Color.secondary : Color.secondary.opacity(0.15))
                         .foregroundStyle(Color.secondary)
                         .clipShape(Circle())
+                        .padding(.horizontal, 8)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.borderless)
                 .help(staysOnTop ? "Disable Stay on Top" : "Enable Stay on Top")
             }
         }
