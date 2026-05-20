@@ -27,6 +27,17 @@ struct SidebarView: View {
                     )
                 }
                 .onMove(perform: moveAct)
+                
+                if (show.acts.count > 0) {
+                    Text("END OF SHOW")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 16)
+                        .background(Color.red.opacity(0.15))
+                        .fixedSize()
+                }
+                
             }
             .listStyle(.sidebar)
 
