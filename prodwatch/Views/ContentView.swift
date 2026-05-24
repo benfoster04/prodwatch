@@ -21,6 +21,7 @@ struct ContentView: View {
     @State private var show: Show = Show(title: "New Show")
     @State private var colorSchemeID: UUID = UUID()
     @State private var showingExport    = false
+    @State private var showingLog       = false
     @State private var showingNewShow   = false
     @State private var confirmNewShow   = false
     @State private var confirmOpenShow  = false
@@ -45,6 +46,9 @@ struct ContentView: View {
                 show = newShow
                 engine.loadShow(newShow)
             }
+        }
+        .sheet(isPresented: $showingLog) {
+            LogSheetView(engine: engine)
         }
         .sheet(isPresented: $showingExport) {
             ExportSheetView(engine: engine)
@@ -148,6 +152,14 @@ struct ContentView: View {
                   ? "OSC listening on port \(String(oscListener.port))"
                   : "OSC not listening")
 
+            Button {
+                showingLog = true
+            } label: {
+                Image(systemName: "table")
+            }
+            .help("Log Table")
+            .disabled(engine.showRun == nil)
+            
             Button {
                 showingExport = true
             } label: {
@@ -266,6 +278,26 @@ struct NewShowView: View {
     }
 }
 
+struct ModalHeaderView: View {
+    @ObservedObject var engine: TimerEngine
+    
+    var body: some View {
+        if let run = engine.showRun {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(run.show.title)
+                    .font(.callout).fontWeight(.medium)
+                Text("\(run.entries.count) logged events · \(run.totalDuration.stopwatchFormatted) total")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.secondary.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
+}
+
 // MARK: - ExportSheetView
 /// Sheet for choosing export format and triggering export.
 struct ExportSheetView: View {
@@ -274,21 +306,13 @@ struct ExportSheetView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            
             Text("Export Show Report")
                 .font(.title2).bold()
 
             if let run = engine.showRun {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(run.show.title)
-                        .font(.callout).fontWeight(.medium)
-                    Text("\(run.entries.count) logged events · \(run.totalDuration.stopwatchFormatted) total")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .padding(12)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.secondary.opacity(0.08))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                
+                ModalHeaderView(engine: engine)
 
                 VStack(spacing: 10) {
                     ForEach(ExportFormat.allCases, id: \.self) { format in
@@ -334,4 +358,55 @@ struct ExportSheetView: View {
         case .pdf:  return "doc.richtext"
         }
     }
+}
+
+// MARK: - LogSheetView
+struct LogSheetView: View {
+    @ObservedObject var engine: TimerEngine
+    @Environment(\.dismiss) var dismiss
+
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            
+            Text("Event Log")
+                .font(.title2).bold()
+            
+            if let run = engine.showRun {
+                
+                ModalHeaderView(engine: engine)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(run.entries) { entry in
+                        Text("[\(entry.wallClockTime.formatted(date: .omitted, time: .standard))] +\(entry.showElapsed.stopwatchFormatted) \(entry.actName) > \(entry.sectionName) - \(entry.event.rawValue)")
+                            .foregroundStyle(colourByEvent(event: entry.event))
+                    }
+                }
+                
+            } else {
+                Text("No show run data available.")
+                    .foregroundStyle(.secondary)
+            }
+            HStack {
+                Spacer()
+                Button("Cancel") { dismiss() }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(24)
+        .frame(width: 500)
+    }
+    
+    private func colourByEvent(event: TimestampEvent) -> Color {
+        return switch event {
+        case .started, .resumedFromPause, .showResumed: Color.green
+        case .stopped, .paused:                         Color.orange
+        case .showStopped, .showCancelled:              Color.red
+        case .timestamp:                                Color.blue
+        case .showCompleted:                            Color.green
+        case .reset, .completed:                        Color.secondary
+        }
+    }
+    
 }
