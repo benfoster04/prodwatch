@@ -107,6 +107,7 @@ struct SidebarView: View {
                 }
                 .buttonStyle(.plain)
                 .foregroundStyle(.secondary)
+                .disabled(engine.isRunning || engine.isPaused)
             }
             Spacer()
         }
@@ -191,6 +192,7 @@ struct ActSectionView: View {
                 }
                 .buttonStyle(.plain)
                 .padding(.leading, 8)
+                .disabled(engine.isRunning || engine.isPaused)
             }
         } header: {
             HStack {
