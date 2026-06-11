@@ -1,27 +1,27 @@
 import Foundation
 
-// MARK: - Section
+// MARK: - Stopwatch
 /// A single timed unit within a show (e.g. "Act 1", "Interval", "Band Tune")
-struct ShowSection: Identifiable, Codable, Hashable, Equatable {
+struct Stopwatch: Identifiable, Codable, Hashable, Equatable {
     var id: UUID = UUID()
     var name: String
     var targetDuration: TimeInterval?    // optional target in seconds
     var notes: String = ""
     var recordedDuration: TimeInterval?  // filled in after the section runs
-    var sectionType: SectionType = .primary
+    var type: StopwatchType = .primary
 }
 
-enum SectionType: String, Codable, CaseIterable {
+enum StopwatchType: String, Codable, CaseIterable {
     case primary   = "Primary"
     case timestamp = "Timestamp"
 }
 
-// MARK: - Act
+// MARK: - Section
 /// A named grouping of sections (e.g. "First Half", or a flat show can have one act)
-struct Act: Identifiable, Codable, Hashable, Equatable {
+struct ShowSection: Identifiable, Codable, Hashable, Equatable {
     var id: UUID = UUID()
     var name: String
-    var sections: [ShowSection] = []
+    var stopwatches: [Stopwatch] = []
 }
 
 // MARK: - Show
@@ -30,12 +30,12 @@ struct Show: Identifiable, Codable, Equatable {
     var id: UUID = UUID()
     var title: String
     var venue: String = ""
-    var date: Date = Date()
-    var acts: [Act] = []
+    var date: Date = Date.now
+    var sections: [ShowSection] = []
 
     /// Flattened list of all sections across all acts — useful for linear navigation
-    var allSections: [ShowSection] {
-        acts.flatMap { $0.sections }
+    var allStopwatches: [Stopwatch] {
+        sections.flatMap { $0.stopwatches }
     }
 }
 

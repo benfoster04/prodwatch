@@ -16,12 +16,12 @@ struct PopoutView: View {
             
             VStack(alignment: .center, spacing: 2) {
                 
-                Text(engine.currentSection?.name ?? "—")
+                Text(engine.currentStopwatch?.name ?? "—")
                     .font(.system(size: 40, weight: .semibold, design: .default))
                     .lineLimit(1)
                     .frame(minWidth: 150, idealWidth: 300)
                 
-                Text(engine.currentAct?.name ?? "—")
+                Text(engine.currentSection?.name ?? "—")
                     .font(.system(size: 32, weight: .regular, design: .default))
                     .foregroundStyle(.secondary)
                     .frame(minWidth: 150, idealWidth: 300)

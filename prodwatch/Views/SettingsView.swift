@@ -5,9 +5,7 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var oscListener: OSCListener
     @AppStorage("oscPort")          private var oscPort: Int = 53000
-    @AppStorage("showCentiseconds") private var showCentiseconds: Bool = false
     @AppStorage("colorScheme")      private var colorSchemePreference: ColorSchemePreference = .system
-    @AppStorage("defaultVenue")     private var defaultVenue: String = ""
     @AppStorage("defaultSavePath")  private var defaultSavePath: URL = URL(string: "~/Documents")!
     @AppStorage("defaultSaveType")  private var defaultSaveType: ExportFormat = .pdf
     @AppStorage("autoCreateTimer")  private var autoCreateTimer: Bool = true
@@ -130,16 +128,6 @@ struct SettingsView: View {
             } header: {
                 Text("Theme")
             }
-
-            Section {
-                Toggle("Show centiseconds on section timer", isOn: $showCentiseconds)
-                    .disabled(true)
-                Text("[Deprecated] Disabling this reduces visual noise and visual impact.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } header: {
-                Text("Timer Display")
-            }
             
             Section {
                 Toggle("Auto create Primary timer", isOn: $autoCreateTimer)
@@ -159,11 +147,6 @@ struct SettingsView: View {
     private var exportTab: some View {
         Form {
             Section {
-                TextField("Default venue name", text: $defaultVenue)
-                    .textFieldStyle(.roundedBorder)
-                Text("Pre-fills the venue field when creating a new show.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
                 
                 HStack(alignment: .bottom, spacing: 8) {
                     TextField("Save path", value:$defaultSavePath, format: URL.FormatStyle(), prompt: Text("~/Documents"))

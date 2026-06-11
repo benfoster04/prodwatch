@@ -8,8 +8,8 @@ struct ShowStopView: View {
     @ObservedObject var engine: TimerEngine
     @Environment(\.dismiss) var dismiss
 
-    @State private var selectedActIndex: Int = 0
     @State private var selectedSectionIndex: Int = 0
+    @State private var selectedStopwatchIndex: Int = 0
     @State private var showCancelConfirm = false
 
     var body: some View {
@@ -57,8 +57,8 @@ struct ShowStopView: View {
             Text("This will mark the run as cancelled. All logged timestamps will still be available for export.")
         }
         .onAppear {
-            selectedActIndex = engine.currentActIndex
             selectedSectionIndex = engine.currentSectionIndex
+            selectedStopwatchIndex = engine.currentStopwatchIndex
         }
     }
 
@@ -130,9 +130,9 @@ struct ShowStopView: View {
 
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(engine.currentSection?.name ?? "—")
+                    Text(engine.currentStopwatch?.name ?? "—")
                         .font(.callout)
-                    Text(engine.currentAct?.name ?? "—")
+                    Text(engine.currentSection?.name ?? "—")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -159,16 +159,16 @@ struct ShowStopView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(Color.accentColor)
 
-            // Act picker
+            // Section picker
             VStack(alignment: .leading, spacing: 8) {
-                Picker("Section", selection: $selectedActIndex) {
+                Picker("Section", selection: $selectedSectionIndex) {
                     ForEach(engine.showRun.show.sections.indices, id: \.self) { i in
                         Text(engine.showRun.show.sections[i].name).tag(i)
                     }
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: selectedActIndex) {
-                    selectedSectionIndex = 0
+                .onChange(of: selectedSectionIndex) {
+                    selectedStopwatchIndex = 0
                 }
 
                 // Section picker for chosen act
@@ -179,11 +179,11 @@ struct ShowStopView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else {
-                        Picker("Section", selection: $selectedSectionIndex) {
-                            ForEach(sections.indices, id: \.self) { i in
+                        Picker("Section", selection: $selectedStopwatchIndex) {
+                            ForEach(stopwatches.indices, id: \.self) { i in
                                 HStack {
-                                    Text(sections[i].name)
-                                    Text(sections[i].sectionType.rawValue)
+                                    Text(stopwatches[i].name)
+                                    Text(stopwatches[i].type.rawValue)
                                         .foregroundStyle(.secondary)
                                         .font(.caption)
                                 }
@@ -199,8 +199,8 @@ struct ShowStopView: View {
                 Spacer()
                 Button("Resume from Selected") {
                     engine.resolveShowStop(.resumeFromSection(
-                        actIndex: selectedActIndex,
-                        sectionIndex: selectedSectionIndex
+                        actIndex: selectedSectionIndex,
+                        sectionIndex: selectedStopwatchIndex
                     ))
                     dismiss()
                 }

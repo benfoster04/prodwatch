@@ -1,5 +1,4 @@
 import SwiftUI
-import UniformTypeIdentifiers
 
 // MARK: - ContentView
 /// Root layout — NavigationSplitView with sidebar (show structure)
@@ -14,8 +13,6 @@ struct ContentView: View {
 
     @AppStorage("oscPort")          private var oscPort: Int = 53000
     @AppStorage("colorScheme")      private var colorSchemePreference: ColorSchemePreference = .system
-    @AppStorage("defaultVenue")     private var defaultVenue: String = ""
-    @AppStorage("showCentiseconds") private var showCentiseconds: Bool = true
     @AppStorage("autoStartOSC")     private var autoStartOSC: Bool = false
 
     @State private var colorSchemeID: UUID = UUID()
@@ -202,7 +199,12 @@ struct ModalHeaderView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.secondary.opacity(0.08))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
+    
 }
 
 // MARK: - ExportSheetView
@@ -271,7 +273,6 @@ struct ExportSheetView: View {
 struct LogSheetView: View {
     @ObservedObject var engine: TimerEngine
     @Environment(\.dismiss) var dismiss
-
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {

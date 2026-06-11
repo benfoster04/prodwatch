@@ -22,7 +22,7 @@ struct SidebarView: View {
                     SectionView(
                         section: $section,
                         engine: engine,
-                        onDelete: { deleteAct(act) }
+                        onDelete: { deleteAct(section) }
                     )
                 }
                 .onMove(perform: moveAct)
@@ -42,7 +42,7 @@ struct SidebarView: View {
 
             Divider()
 
-            // Add Act button
+            // Add Section button
             addActFooter
         }
     }
@@ -119,11 +119,11 @@ struct SidebarView: View {
     private func commitAddAct() {
         let name = addingActName.trimmingCharacters(in: .whitespaces)
         guard !name.isEmpty else { return }
-        var act = Act(name: name)
+        var section = ShowSection(name: name)
         if (autoCreateTimer) {
-            act.sections.append(ShowSection(
+            section.stopwatches.append(Stopwatch(
                 name: name,
-                sectionType: SectionType.primary
+                type: StopwatchType.primary
             ))
         }
         engine.showRun.show.sections.append(section)
@@ -142,8 +142,8 @@ struct SidebarView: View {
 
 // MARK: - ActSectionView
 /// A single section row with its expandable list of stopwatches.
-struct ActSectionView: View {
-    @Binding var act: Act
+struct SectionView: View {
+    @Binding var section: ShowSection
     @ObservedObject var engine: TimerEngine
     let onDelete: () -> Void
 
@@ -154,14 +154,14 @@ struct ActSectionView: View {
 
     var body: some View {
         Section(isExpanded: $isExpanded) {
-            ForEach($act.sections) { $section in
+            ForEach($section.stopwatches) { $stopwatch in
                 SectionRowView(
-                    section: $section,
-                    isActive: isActive(section),
-                    onDelete: { deleteSection(section) }
+                    stopwatch: $stopwatch,
+                    isActive: isActive(stopwatch),
+                    onDelete: { deleteStopwatch(stopwatch) }
                 )
             }
-            .onMove(perform: moveSection)
+            .onMove(perform: moveStopwatch)
 
             // Add section inline
             if showAddSection {
@@ -169,8 +169,8 @@ struct ActSectionView: View {
                     TextField("Stopwatch name", text: $addingSectionName)
                         .textFieldStyle(.roundedBorder)
                         .font(.callout)
-                        .onSubmit { commitAddSection() }
-                    Button("Add", action: commitAddSection)
+                        .onSubmit { commitAddStopwatch() }
+                    Button("Add", action: commitAddStopwatch)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.small)
                     Button("Cancel") {
@@ -201,12 +201,12 @@ struct ActSectionView: View {
                     .onTapGesture { isExpanded.toggle() }
 
                 if editingActName {
-                    TextField("Section name", text: $act.name)
+                    TextField("Section name", text: $section.name)
                         .textFieldStyle(.roundedBorder)
                         .font(.callout)
                         .onSubmit { editingActName = false }
                 } else {
-                    Text(act.name)
+                    Text(section.name)
                         .font(.callout)
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
@@ -232,31 +232,33 @@ struct ActSectionView: View {
     private func isActive(_ stopwatch: Stopwatch) -> Bool {
         let sections = engine.showRun.show.sections
         guard engine.currentSectionIndex < sections.count else { return false }
-        return sections[engine.currentSectionIndex].id == section.id &&
-               acts[engine.currentActIndex].id == act.id
+        let stopwatches = sections[engine.currentSectionIndex].stopwatches
+        guard engine.currentStopwatchIndex < stopwatches.count else { return false }
+        return sections[engine.currentStopwatchIndex].id == section.id &&
+               stopwatches[engine.currentSectionIndex].id == stopwatch.id
     }
 
-    private func commitAddSection() {
+    private func commitAddStopwatch() {
         let name = addingSectionName.trimmingCharacters(in: .whitespaces)
         guard !name.isEmpty else { return }
-        act.sections.append(ShowSection(name: name))
+        section.stopwatches.append(Stopwatch(name: name))
         addingSectionName = ""
         showAddSection = false
     }
 
-    private func deleteSection(_ section: ShowSection) {
-        act.sections.removeAll { $0.id == section.id }
+    private func deleteStopwatch(_ stopwatch: Stopwatch) {
+        section.stopwatches.removeAll { $0.id == stopwatch.id }
     }
 
-    private func moveSection(from source: IndexSet, to destination: Int) {
-        act.sections.move(fromOffsets: source, toOffset: destination)
+    private func moveStopwatch(from source: IndexSet, to destination: Int) {
+        section.stopwatches.move(fromOffsets: source, toOffset: destination)
     }
 }
 
 // MARK: - SectionRowView
 /// A single section row with active highlight and edit/delete controls.
 struct SectionRowView: View {
-    @Binding var section: ShowSection
+    @Binding var stopwatch: Stopwatch
     let isActive: Bool
     let onDelete: () -> Void
 
@@ -270,22 +272,22 @@ struct SectionRowView: View {
                 .frame(width: 3, height: 28)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(section.name)
+                Text(stopwatch.name)
                     .font(.callout)
                     .foregroundStyle(isActive ? .primary : .secondary)
 
                 HStack(spacing: 6) {
-                    // Section type badge
-                    Text(section.sectionType.rawValue)
+                    // Stopwatch type badge
+                    Text(stopwatch.type.rawValue)
                         .font(.caption2)
                         .padding(.horizontal, 5)
                         .padding(.vertical, 1)
-                        .background(typeColor(section.sectionType).opacity(0.15))
-                        .foregroundStyle(typeColor(section.sectionType))
+                        .background(typeColor(stopwatch.type).opacity(0.15))
+                        .foregroundStyle(typeColor(stopwatch.type))
                         .clipShape(Capsule())
 
                     // Target duration
-                    if let target = section.targetDuration {
+                    if let target = stopwatch.targetDuration {
                         Text(target.shortFormatted)
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
@@ -311,11 +313,11 @@ struct SectionRowView: View {
         .background(isActive ? Color.accentColor.opacity(0.08) : Color.clear)
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .sheet(isPresented: $isEditing) {
-            SectionEditView(section: $section)
+            SectionEditView(stopwatch: $stopwatch)
         }
     }
 
-    private func typeColor(_ type: SectionType) -> Color {
+    private func typeColor(_ type: StopwatchType) -> Color {
         switch type {
         case .primary:   return .blue
         case .timestamp: return .purple
@@ -361,7 +363,7 @@ struct ShowEditView: View {
 // MARK: - SectionEditView
 /// Sheet for editing a section's name, type, target duration, and notes.
 struct SectionEditView: View {
-    @Binding var section: ShowSection
+    @Binding var stopwatch: Stopwatch
     @Environment(\.dismiss) var dismiss
 
     @State private var targetMinutes: String = ""
@@ -373,13 +375,13 @@ struct SectionEditView: View {
                 .font(.title2).bold()
 
             LabeledContent("Name") {
-                TextField("Stopwatch name", text: $section.name)
+                TextField("Stopwatch name", text: $stopwatch.name)
                     .textFieldStyle(.roundedBorder)
             }
 
             LabeledContent("Type") {
-                Picker("", selection: $section.sectionType) {
-                    ForEach(SectionType.allCases, id: \.self) { type in
+                Picker("", selection: $stopwatch.type) {
+                    ForEach(StopwatchType.allCases, id: \.self) { type in
                         Text(type.rawValue).tag(type)
                     }
                 }
@@ -397,7 +399,7 @@ struct SectionEditView: View {
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 50)
                     Button("Clear") {
-                        section.targetDuration = nil
+                        stopwatch.targetDuration = nil
                         targetMinutes = ""
                         targetSeconds = ""
                     }
@@ -408,7 +410,7 @@ struct SectionEditView: View {
             }
 
             LabeledContent("Notes") {
-                TextField("Notes", text: $section.notes, axis: .vertical)
+                TextField("Notes", text: $stopwatch.notes, axis: .vertical)
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(3...5)
             }
@@ -431,7 +433,7 @@ struct SectionEditView: View {
     }
 
     private func loadTarget() {
-        guard let t = section.targetDuration else { return }
+        guard let t = stopwatch.targetDuration else { return }
         let total = Int(t)
         targetMinutes = String(total / 60)
         targetSeconds = String(format: "%02d", total % 60)
@@ -441,6 +443,6 @@ struct SectionEditView: View {
         let m = Int(targetMinutes) ?? 0
         let s = Int(targetSeconds) ?? 0
         let total = m * 60 + s
-        section.targetDuration = total > 0 ? TimeInterval(total) : nil
+        stopwatch.targetDuration = total > 0 ? TimeInterval(total) : nil
     }
 }

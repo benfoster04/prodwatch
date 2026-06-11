@@ -18,6 +18,7 @@ final class TimerEngine: ObservableObject {
     @Published var pauseElapsed: TimeInterval = 0      // how long currently paused
     @Published var showStopElapsed: TimeInterval = 0   // how long show has been stopped
 
+    @Published var currentStopwatchIndex: Int = 0
     @Published var currentSectionIndex: Int = 0
     @Published var showRun: ShowRun = ShowRun(show: Show(title: "New Show")) // Just init something
 
@@ -53,8 +54,8 @@ final class TimerEngine: ObservableObject {
         showStart = nil
         pauseStart = nil
         showStopStart = nil
-        currentActIndex = 0
         currentSectionIndex = 0
+        currentStopwatchIndex = 0
     }
 
     // MARK: - Primary Controls
@@ -73,7 +74,7 @@ final class TimerEngine: ObservableObject {
 
         if showStart == nil {
             showStart = now
-            showRun?.startedAt = now
+            showRun.startedAt = now
         }
 
         sectionStart = now
@@ -120,15 +121,14 @@ final class TimerEngine: ObservableObject {
     
     func save() {
         guard !isShowStopped, !isShowStopped else { return }
-        if (showRun != nil) {
-            ExportManager.exportPath(
-                showRun.unsafelyUnwrapped,
-                format: defaultSaveType,
-                path: defaultSavePath.appending(component:
-                    ExportManager.fileName(for: showRun.unsafelyUnwrapped, format: defaultSaveType)
-                )
+        ExportManager.exportPath(
+            showRun,
+            format: defaultSaveType,
+            path: defaultSavePath.appending(component:
+                ExportManager.fileName(for: showRun, format: defaultSaveType)
             )
-        }
+        )
+        
     }
 
     // MARK: - Show Stop
@@ -167,23 +167,23 @@ final class TimerEngine: ObservableObject {
         switch resolution {
         case .resumeFromCurrent:
             logEvent(.showResumed, duration: stopDuration,
-                     resumedFromSection: currentSection?.name)
+                     resumedFromSection: currentStopwatch?.name)
             start()
 
         case .resumeFromSection(let actIdx, let sectionIdx):
-            currentActIndex = actIdx
-            currentSectionIndex = sectionIdx
+            currentSectionIndex = actIdx
+            currentStopwatchIndex = sectionIdx
             sectionAccumulated = 0
             sectionElapsed = 0
             logEvent(.showResumed, duration: stopDuration,
-                     resumedFromSection: currentSection?.name)
+                     resumedFromSection: currentStopwatch?.name)
             start()
 
         case .cancelShow:
             isShowCancelled = true
             ticker?.cancel()
-            showRun?.wasCancelled = true
-            showRun?.endedAt = now
+            showRun.wasCancelled = true
+            showRun.endedAt = now
             logEvent(.showCancelled, duration: stopDuration)
         }
     }
@@ -191,28 +191,27 @@ final class TimerEngine: ObservableObject {
     // MARK: - Section Navigation
 
     func nextSection() {
-        guard let run = showRun else { return }
-        let acts = run.show.acts
-        guard currentActIndex < acts.count else { return }
+        let acts = showRun.show.sections
+        guard currentSectionIndex < acts.count else { return }
         logEvent(.completed)
 
-        if currentSectionIndex < acts[currentActIndex].sections.count - 1 {
+        if currentStopwatchIndex < acts[currentSectionIndex].stopwatches.count - 1 {
+            currentStopwatchIndex += 1
+        } else if currentSectionIndex < acts.count - 1 {
             currentSectionIndex += 1
-        } else if currentActIndex < acts.count - 1 {
-            currentActIndex += 1
-            currentSectionIndex = 0
+            currentStopwatchIndex = 0
         }
         resetSection()
     }
 
     func previousSection() {
         logEvent(.reset)
-        if currentSectionIndex > 0 {
+        if currentStopwatchIndex > 0 {
+            currentStopwatchIndex -= 1
+        } else if currentSectionIndex > 0 {
             currentSectionIndex -= 1
-        } else if currentActIndex > 0 {
-            currentActIndex -= 1
-            let prevSections = showRun?.show.acts[currentActIndex].sections ?? []
-            currentSectionIndex = max(0, prevSections.count - 1)
+            let prevSections = showRun.show.sections[currentSectionIndex].stopwatches
+            currentStopwatchIndex = max(0, prevSections.count - 1)
         }
         resetSection()
     }
@@ -223,27 +222,26 @@ final class TimerEngine: ObservableObject {
     /// Primary markers: complete current, stop timer, advance, auto-start.
     func go() {
         guard !isShowStopped, !isShowCancelled else { return }
-        guard let run = showRun else { return }
 
-        let acts = run.show.acts
-        guard currentActIndex < acts.count else { return }
+        let acts = showRun.show.sections
+        guard currentSectionIndex < acts.count else { return }
 
         // Find the next item in sequence
         let nextIndices = nextSectionIndices()
 
 //         Only log completed if current item is a primary marker
-//        if currentSection?.sectionType == .primary {
+//        if currentStopwatch?.type == .primary {
 //            logEvent(.completed)
 //        }
 
         // Advance to next
         if let (nextAct, nextSection) = nextIndices {
-            currentActIndex = nextAct
-            currentSectionIndex = nextSection
+            currentSectionIndex = nextAct
+            currentStopwatchIndex = nextSection
 
-            let next = run.show.acts[nextAct].sections[nextSection]
+            let next = showRun.show.sections[nextAct].stopwatches[nextSection]
 
-            switch next.sectionType {
+            switch next.type {
             case .timestamp:
                 // Log the timestamp marker immediately, keep timer running
                 logEvent(.timestamp)
@@ -271,7 +269,7 @@ final class TimerEngine: ObservableObject {
                 showStart = nil
             }
             sectionStart = nil
-            showRun?.endedAt = Date()
+            showRun.endedAt = Date()
             logEvent(.showCompleted)
         }
     }
@@ -279,36 +277,33 @@ final class TimerEngine: ObservableObject {
     /// Returns the (actIndex, sectionIndex) of the next item, or nil if end of show
     
     private func nextSectionIndices() -> (Int, Int)? {
-        guard let run = showRun else { return nil }
-        let acts = run.show.acts
-        let sections = acts[currentActIndex].sections
+        let acts = showRun.show.sections
+        let sections = acts[currentSectionIndex].stopwatches
 
-        if currentSectionIndex < sections.count - 1 {
-            return (currentActIndex, currentSectionIndex + 1)
-        } else if currentActIndex < acts.count - 1 {
-            return (currentActIndex + 1, 0)
+        if currentStopwatchIndex < sections.count - 1 {
+            return (currentSectionIndex, currentStopwatchIndex + 1)
+        } else if currentSectionIndex < acts.count - 1 {
+            return (currentSectionIndex + 1, 0)
         }
         return nil
     }
     
     // MARK: - Computed Properties
 
-    var currentSection: ShowSection? {
-        guard let run = showRun,
-              currentActIndex < run.show.acts.count else { return nil }
-        let sections = run.show.acts[currentActIndex].sections
-        guard currentSectionIndex < sections.count else { return nil }
-        return sections[currentSectionIndex]
+    var currentStopwatch: Stopwatch? {
+        guard currentSectionIndex < showRun.show.sections.count else { return nil }
+        let sections = showRun.show.sections[currentSectionIndex].stopwatches
+        guard currentStopwatchIndex < sections.count else { return nil }
+        return sections[currentStopwatchIndex]
     }
 
-    var currentAct: Act? {
-        guard let run = showRun,
-              currentActIndex < run.show.acts.count else { return nil }
-        return run.show.acts[currentActIndex]
+    var currentSection: ShowSection? {
+        guard currentSectionIndex < showRun.show.sections.count else { return nil }
+        return showRun.show.sections[currentSectionIndex]
     }
 
     var targetDelta: TimeInterval? {
-        guard let target = currentSection?.targetDuration else { return nil }
+        guard let target = currentStopwatch?.targetDuration else { return nil }
         return sectionElapsed - target
     }
 
@@ -356,9 +351,8 @@ final class TimerEngine: ObservableObject {
         duration: TimeInterval? = nil,
         resumedFromSection: String? = nil
     ) {
-        guard var run = showRun,
-              let section = currentSection,
-              let act = currentAct else { return }
+        guard let section = currentStopwatch,
+              let act = currentSection else { return }
 
         let entry = TimestampEntry(
             sectionName: section.name,
@@ -369,8 +363,7 @@ final class TimerEngine: ObservableObject {
             duration: duration,
             resumedFromSection: resumedFromSection
         )
-        run.entries.append(entry)
-        showRun = run
+        showRun.entries.append(entry)
     }
 }
 
