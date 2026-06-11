@@ -6,7 +6,6 @@ import SwiftUI
 /// jumping to a specific section, or cancelling the show entirely.
 struct ShowStopView: View {
     @ObservedObject var engine: TimerEngine
-    let show: Show
     @Environment(\.dismiss) var dismiss
 
     @State private var selectedActIndex: Int = 0
@@ -162,9 +161,9 @@ struct ShowStopView: View {
 
             // Act picker
             VStack(alignment: .leading, spacing: 8) {
-                Picker("Act", selection: $selectedActIndex) {
-                    ForEach(show.acts.indices, id: \.self) { i in
-                        Text(show.acts[i].name).tag(i)
+                Picker("Section", selection: $selectedActIndex) {
+                    ForEach(engine.showRun.show.sections.indices, id: \.self) { i in
+                        Text(engine.showRun.show.sections[i].name).tag(i)
                     }
                 }
                 .pickerStyle(.segmented)
@@ -173,10 +172,10 @@ struct ShowStopView: View {
                 }
 
                 // Section picker for chosen act
-                if selectedActIndex < show.acts.count {
-                    let sections = show.acts[selectedActIndex].sections
-                    if sections.isEmpty {
-                        Text("No sections in this act")
+                if selectedSectionIndex < engine.showRun.show.sections.count {
+                    let stopwatches = engine.showRun.show.sections[selectedSectionIndex].stopwatches
+                    if stopwatches.isEmpty {
+                        Text("No stopwatches in this section")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     } else {
@@ -206,8 +205,8 @@ struct ShowStopView: View {
                     dismiss()
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(selectedActIndex >= show.acts.count ||
-                          selectedSectionIndex >= (show.acts[safe: selectedActIndex]?.sections.count ?? 0))
+                .disabled(selectedSectionIndex >= engine.showRun.show.sections.count ||
+                          selectedStopwatchIndex >= (engine.showRun.show.sections[safe: selectedSectionIndex]?.stopwatches.count ?? 0))
             }
         }
     }

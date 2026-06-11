@@ -5,13 +5,10 @@ import SwiftUI
 /// target delta, and primary transport controls.
 struct TimerDisplayView: View {
     @ObservedObject var engine: TimerEngine
-    @Binding var show: Show
     @State private var showingShowStop = false
 
     var body: some View {
         VStack(spacing: 0) {
-            // Section + Act name
-            
 
             // Main clock area
             VStack(spacing: 24) {
@@ -45,7 +42,7 @@ struct TimerDisplayView: View {
             .padding(32)
         }
         .sheet(isPresented: $showingShowStop) {
-            ShowStopView(engine: engine, show: show)
+            ShowStopView(engine: engine)
         }
     }
     

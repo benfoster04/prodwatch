@@ -18,7 +18,6 @@ struct ContentView: View {
     @AppStorage("showCentiseconds") private var showCentiseconds: Bool = true
     @AppStorage("autoStartOSC")     private var autoStartOSC: Bool = false
 
-    @State private var show: Show = Show(title: "New Show")
     @State private var colorSchemeID: UUID = UUID()
     @State private var showingExport    = false
     @State private var showingLog       = false
@@ -28,10 +27,10 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            SidebarView(engine: engine, show: $show)
+            SidebarView(engine: engine)
                 .navigationSplitViewColumnWidth(min: 240, ideal: 280, max: 340)
         } detail: {
-            TimerDisplayView(engine: engine, show: $show)
+            TimerDisplayView(engine: engine)
         }
         .toolbar { toolbarContent }
         .preferredColorScheme(colorSchemePreference.colorScheme)
@@ -42,8 +41,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingNewShow) {
-            NewShowView(defaultVenue: defaultVenue) { newShow in
-                show = newShow
+            NewShowView() { newShow in
                 engine.loadShow(newShow)
             }
         }
@@ -62,9 +60,10 @@ struct ContentView: View {
             guard let port = note.userInfo?["port"] as? Int else { return }
             oscListener.restart(port: UInt16(port), onCommand: handleOSC)
         }
-        .onChange(of: show) {
-            engine.loadShow(show)
-        }
+        // Manage Show state with the engine
+//        .onChange(of: show) {
+//            engine.loadShow(show)
+//        }
         .confirmationDialog("Start a New Show?", isPresented: $confirmNewShow, titleVisibility: .visible) {
             Button("Continue", role: .destructive) { showingNewShow = true }
             Button("Cancel", role: .cancel) {}
@@ -72,7 +71,11 @@ struct ContentView: View {
             Text("Any unsaved changes to the current show will be lost.")
         }
         .confirmationDialog("Open a Show?", isPresented: $confirmOpenShow, titleVisibility: .visible) {
-            Button("Continue", role: .destructive) { openShow() }
+            Button("Continue", role: .destructive) {
+                if let newshow = openShow() {
+                    engine.loadShow(newshow)
+                }
+            }
             Button("Cancel", role: .cancel) {}
         } message: {
             Text("Any unsaved changes to the current show will be lost.")
@@ -106,7 +109,7 @@ struct ContentView: View {
             .help("New Show")
 
             Button {
-                openShow()
+                confirmOpenShow = true
             } label: {
                 Image(systemName: "folder")
             }
@@ -114,7 +117,7 @@ struct ContentView: View {
             .disabled(engine.isRunning)
             
             Button {
-                saveShow()
+                saveShow(show: engine.showRun.show)
             } label: {
                 Image(systemName: "square.and.arrow.down")
             }
@@ -124,9 +127,9 @@ struct ContentView: View {
         // Centre — show title
         ToolbarItem(placement: .principal) {
             VStack(spacing: 0) {
-                Text(show.title)
+                Text(engine.showRun.show.title)
                     .font(.headline)
-                Text(show.date.formatted(date: .abbreviated, time: .omitted))
+                Text(engine.showRun.show.date.formatted(date: .abbreviated, time: .omitted))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -158,7 +161,7 @@ struct ContentView: View {
                 Image(systemName: "table")
             }
             .help("Log Table")
-            .disabled(engine.showRun == nil)
+            .disabled(engine.showRun.entries.count == 0)
             
             Button {
                 showingExport = true
@@ -166,7 +169,7 @@ struct ContentView: View {
                 Image(systemName: "doc")
             }
             .help("Export Report")
-            .disabled(engine.showRun == nil)
+            .disabled(engine.showRun.entries.count == 0)
             
             Button {
                 openWindow(id: "monitor")
@@ -282,18 +285,12 @@ struct ModalHeaderView: View {
     @ObservedObject var engine: TimerEngine
     
     var body: some View {
-        if let run = engine.showRun {
-            VStack(alignment: .leading, spacing: 6) {
-                Text(run.show.title)
-                    .font(.callout).fontWeight(.medium)
-                Text("\(run.entries.count) logged events · \(run.totalDuration.stopwatchFormatted) total")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.secondary.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+        VStack(alignment: .leading, spacing: 6) {
+            Text(engine.showRun.show.title)
+                .font(.callout).fontWeight(.medium)
+            Text("\(engine.showRun.entries.count) logged events · \(engine.showRun.totalDuration.stopwatchFormatted) total")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 }
@@ -310,14 +307,14 @@ struct ExportSheetView: View {
             Text("Export Show Report")
                 .font(.title2).bold()
 
-            if let run = engine.showRun {
+            if engine.showRun.entries.count > 0 {
                 
                 ModalHeaderView(engine: engine)
 
                 VStack(spacing: 10) {
                     ForEach(ExportFormat.allCases, id: \.self) { format in
                         Button {
-                            ExportManager.export(run, format: format)
+                            ExportManager.export(engine.showRun, format: format)
                             dismiss()
                         } label: {
                             HStack {
@@ -372,12 +369,12 @@ struct LogSheetView: View {
             Text("Event Log")
                 .font(.title2).bold()
             
-            if let run = engine.showRun {
+            if engine.showRun.entries.count > 0 {
                 
                 ModalHeaderView(engine: engine)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    ForEach(run.entries) { entry in
+                    ForEach(engine.showRun.entries) { entry in
                         Text("[\(entry.wallClockTime.formatted(date: .omitted, time: .standard))] +\(entry.showElapsed.stopwatchFormatted) \(entry.actName) > \(entry.sectionName) - \(entry.event.rawValue)")
                             .foregroundStyle(colourByEvent(event: entry.event))
                     }

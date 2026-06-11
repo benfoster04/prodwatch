@@ -4,7 +4,6 @@ import SwiftUI
 /// Displays the show structure — acts and sections — and allows editing.
 struct SidebarView: View {
     @ObservedObject var engine: TimerEngine
-    @Binding var show: Show
 
     @State private var editingShow = false
     @State private var addingActName = ""
@@ -19,16 +18,16 @@ struct SidebarView: View {
 
             // Acts + Sections list
             List {
-                ForEach($show.acts) { $act in
-                    ActSectionView(
-                        act: $act,
+                ForEach($engine.showRun.show.sections) { $section in
+                    SectionView(
+                        section: $section,
                         engine: engine,
                         onDelete: { deleteAct(act) }
                     )
                 }
                 .onMove(perform: moveAct)
                 
-                if (show.acts.count > 0) {
+                if (engine.showRun.show.sections.count > 0) {
                     Text("END OF SHOW")
                         .font(.caption)
                         .foregroundStyle(.red)
@@ -54,15 +53,15 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(show.title)
+                    Text(engine.showRun.show.title)
                         .font(.headline)
                         .lineLimit(1)
-                    if !show.venue.isEmpty {
-                        Text(show.venue)
+                    if !engine.showRun.show.venue.isEmpty {
+                        Text(engine.showRun.show.venue)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Text(show.date.formatted(date: .abbreviated, time: .omitted))
+                    Text(engine.showRun.show.date.formatted(date: .abbreviated, time: .omitted))
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                 }
@@ -78,7 +77,7 @@ struct SidebarView: View {
         }
         .padding(12)
         .sheet(isPresented: $editingShow) {
-            ShowEditView(show: $show)
+            ShowEditView(show: $engine.showRun.show)
         }
     }
 
@@ -127,17 +126,17 @@ struct SidebarView: View {
                 sectionType: SectionType.primary
             ))
         }
-        show.acts.append(act)
+        engine.showRun.show.sections.append(section)
         addingActName = ""
         showAddAct = false
     }
 
-    private func deleteAct(_ act: Act) {
-        show.acts.removeAll { $0.id == act.id }
+    private func deleteAct(_ act: ShowSection) {
+        engine.showRun.show.sections.removeAll { $0.id == act.id }
     }
 
     private func moveAct(from source: IndexSet, to destination: Int) {
-        show.acts.move(fromOffsets: source, toOffset: destination)
+        engine.showRun.show.sections.move(fromOffsets: source, toOffset: destination)
     }
 }
 
@@ -230,11 +229,8 @@ struct ActSectionView: View {
         }
     }
 
-    private func isActive(_ section: ShowSection) -> Bool {
-        guard let run = engine.showRun else { return false }
-        let acts = run.show.acts
-        guard engine.currentActIndex < acts.count else { return false }
-        let sections = acts[engine.currentActIndex].sections
+    private func isActive(_ stopwatch: Stopwatch) -> Bool {
+        let sections = engine.showRun.show.sections
         guard engine.currentSectionIndex < sections.count else { return false }
         return sections[engine.currentSectionIndex].id == section.id &&
                acts[engine.currentActIndex].id == act.id

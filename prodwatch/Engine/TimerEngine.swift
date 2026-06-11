@@ -19,8 +19,7 @@ final class TimerEngine: ObservableObject {
     @Published var showStopElapsed: TimeInterval = 0   // how long show has been stopped
 
     @Published var currentSectionIndex: Int = 0
-    @Published var currentActIndex: Int = 0
-    @Published var showRun: ShowRun?
+    @Published var showRun: ShowRun = ShowRun(show: Show(title: "New Show")) // Just init something
 
     // MARK: - Private
 
