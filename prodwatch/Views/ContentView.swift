@@ -24,6 +24,9 @@ struct ContentView: View {
     @State private var showingNewShow   = false
     @State private var confirmNewShow   = false
     @State private var confirmOpenShow  = false
+    
+    func newShowDialog() { confirmNewShow     = true }
+    func openShowDialog() { confirmOpenShow   = true }
 
     var body: some View {
         NavigationSplitView {
@@ -185,99 +188,6 @@ struct ContentView: View {
             }
             .help("Settings")
         }
-    }
-
-
-    // MARK: - File Management
-
-    private func saveShow() {
-        let panel = NSSavePanel()
-        panel.title = "Save Show"
-        panel.allowedContentTypes = [.json]
-        panel.nameFieldStringValue = "\(show.title.replacingOccurrences(of: " ", with: "_")).prodwatch"
-
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            encoder.dateEncodingStrategy = .iso8601
-            let data = try encoder.encode(show)
-            try data.write(to: url)
-        } catch {
-            print("[Save] Failed: \(error)")
-        }
-    }
-
-    private func openShow() {
-        let panel = NSOpenPanel()
-        panel.title = "Open Show"
-        panel.allowedContentTypes = [.json]
-        panel.allowsMultipleSelection = false
-
-        guard panel.runModal() == .OK, let url = panel.url else { return }
-
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let loaded = try decoder.decode(Show.self, from: data)
-            show = loaded
-            engine.loadShow(loaded)
-        } catch {
-            print("[Open] Failed: \(error)")
-        }
-    }
-}
-
-// MARK: - NewShowView
-/// Sheet for creating a new show from scratch.
-struct NewShowView: View {
-    let defaultVenue: String
-    let onCreate: (Show) -> Void
-    @Environment(\.dismiss) var dismiss
-
-    @State private var title  = ""
-    @State private var venue  = ""
-    @State private var date   = Date()
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text("New Show")
-                .font(.title2).bold()
-
-            LabeledContent("Title") {
-                TextField("Show title", text: $title)
-                    .textFieldStyle(.roundedBorder)
-            }
-            LabeledContent("Venue") {
-                TextField("Venue", text: $venue)
-                    .textFieldStyle(.roundedBorder)
-            }
-            LabeledContent("Date") {
-                DatePicker("", selection: $date, displayedComponents: .date)
-                    .labelsHidden()
-            }
-
-            HStack {
-                Spacer()
-                Button("Cancel") { dismiss() }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.secondary)
-                Button("Create") {
-                    var newShow = Show(title: title.isEmpty ? "Untitled Show" : title)
-                    newShow.venue = venue
-                    newShow.date  = date
-                    onCreate(newShow)
-                    dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(title.isEmpty)
-            }
-        }
-        .padding(24)
-        .frame(width: 360)
-        .onAppear { venue = defaultVenue }
     }
 }
 
