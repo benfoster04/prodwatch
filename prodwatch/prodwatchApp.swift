@@ -5,15 +5,14 @@ import SwiftUI
 struct prodwatchApp: App {
     
     private var oscListener: OSCListener = OSCListener()
-    private var timerEngine: TimerEngine = TimerEngine()
+    private var engine: TimerEngine = TimerEngine()
     
     var body: some Scene {
-        WindowGroup {
-            ContentView(
-                engine: timerEngine,
-                oscListener: oscListener
-            )
-        }
+        let contentView: ContentView = ContentView(
+            engine: engine,
+            oscListener: oscListener
+        )
+        WindowGroup { contentView }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified(showsTitle: false))
         .defaultSize(width: 1100, height: 700)
@@ -45,7 +44,7 @@ struct prodwatchApp: App {
         }
         
         WindowGroup("Monitor", id: "monitor") {
-            PopoutView(engine: timerEngine)
+            PopoutView(engine: engine)
         }
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 300, height: 300)
