@@ -24,22 +24,35 @@ struct prodwatchApp: App {
             }
             CommandGroup(replacing: .newItem) {
                 Button("New Show", systemImage: "plus.square") {
-                    
+                    contentView.newShowDialog()
                 }
                 .keyboardShortcut("N")
-                .disabled(true)
+                .disabled(engine.isRunning || engine.isPaused)
                 
                 Button("Open Show", systemImage: "folder") {
-                    
+                    contentView.openShowDialog()
                 }
                 .keyboardShortcut("O")
-                .disabled(true)
+                .disabled(engine.isRunning || engine.isPaused)
                 
                 Button("Save Show", systemImage: "square.and.arrow.down") {
-                    
+                    saveShow(show: engine.showRun.show)
                 }
                 .keyboardShortcut("S")
-                .disabled(true)
+                .disabled(engine.isRunning || engine.isPaused)
+            }
+            CommandGroup(replacing: .appTermination) {
+                Button("Quit", systemImage: "multiply.circle") {
+                    NSApplication.shared.terminate(nil)
+                }
+                .keyboardShortcut("Q")
+                .disabled(engine.isRunning || engine.isPaused)
+                
+                Button("Close", systemImage: "multiply.circle") {
+                    NSApplication.shared.keyWindow?.performClose(nil)
+                }
+                .keyboardShortcut("W")
+                .disabled(engine.isRunning || engine.isPaused)
             }
         }
         
