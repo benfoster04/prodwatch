@@ -7,6 +7,8 @@ import Combine
 final class TimerEngine: ObservableObject {
 
     // MARK: - Published State
+    
+    @Published var error: (any LocalizedError)? = nil
 
     @Published var isRunning: Bool = false
     @Published var isPaused: Bool = false

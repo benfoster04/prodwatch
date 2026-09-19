@@ -42,7 +42,7 @@ enum ExportManager {
         lines.append(String(repeating: "=", count: 50))
         lines.append("Show:    \(run.show.title)")
         lines.append("Venue:   \(run.show.venue.isEmpty ? "—" : run.show.venue)")
-        lines.append("Date:    \(run.show.date.formatted(date: .long, time: .omitted))")
+        lines.append("Date:    \(Date.now.formatted(date: .long, time: .omitted))")
         lines.append("Started: \(run.startedAt.formatted(date: .omitted, time: .standard))")
         if let ended = run.endedAt {
             lines.append("Ended:   \(ended.formatted(date: .omitted, time: .standard))")
@@ -154,7 +154,7 @@ private struct PDFReportRenderer {
         let meta: [(String, String)] = [
             ("Show",    run.show.title),
             ("Venue",   run.show.venue.isEmpty ? "—" : run.show.venue),
-            ("Date",    run.show.date.formatted(date: .long, time: .omitted)),
+            ("Date",    Date.now.formatted(date: .long, time: .omitted)),
             ("Started", run.startedAt.formatted(date: .omitted, time: .standard)),
             ("Status",  run.wasCancelled ? "CANCELLED" : "Completed"),
             ("Total Duration", run.totalDuration.stopwatchFormatted)

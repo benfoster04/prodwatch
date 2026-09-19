@@ -61,7 +61,7 @@ struct SidebarView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
-                    Text(engine.showRun.show.date.formatted(date: .abbreviated, time: .omitted))
+                    Text(Date.now.formatted(date: .abbreviated, time: .omitted))
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                 }
@@ -343,10 +343,6 @@ struct ShowEditView: View {
             LabeledContent("Venue") {
                 TextField("Venue", text: $show.venue)
                     .textFieldStyle(.roundedBorder)
-            }
-            LabeledContent("Date") {
-                DatePicker("", selection: $show.date, displayedComponents: .date)
-                    .labelsHidden()
             }
 
             HStack {

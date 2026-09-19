@@ -30,7 +30,6 @@ struct Show: Identifiable, Codable, Equatable {
     var id: UUID = UUID()
     var title: String
     var venue: String = ""
-    var date: Date = Date.now
     var sections: [ShowSection] = []
 
     /// Flattened list of all sections across all acts — useful for linear navigation
